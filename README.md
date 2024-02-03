@@ -8,9 +8,9 @@ Basic algorithm of Farina method is
 3. Construct an inverse filter for the excitation signal and deconvolve the measured signal to get an impulse response.
 4. Fundamentals and harmonics appear as distinct impulse peaks in the impulse response and can be extracted separately for further analysis.
 
-This project is a demonstration of the core of this analysis method. It may be useful for learning and basis for further development. Written for [GNU Octave 8.3.0](https://octave.org/) but almost any version should work. Matlab should work also with minor modifications.
+This project demonstrates the core of this analysis method. It may be useful for learning and basis for further development. Written for [GNU Octave 8.3.0](https://octave.org/) but almost any version should work. Matlab should also run the scripts with minor modifications.
 
-Filtering, frequency bin shifting, fading, smoothing, windowing methods etc. are often utilized with farina sweep to get cleaner results. See [[2]](#2) for some details. These methods are not used in the examples, except for the frequency response averaging to make plots. 
+Filtering, frequency bin shifting, fading, smoothing, windowing methods etc. are often utilized with farina sweep to get cleaner results. See [[2]](#2) for some details. These methods are not used in the examples, except for the frequency response averaging (smoothing) for cleaner graph plotting. 
 
 Copyright 2022 - 2024 Teemu Ikonen
 
@@ -22,7 +22,7 @@ Copyright 2022 - 2024 Teemu Ikonen
 ![Impulse](images/impulse.png "Impulse Response")
 
 ### example_harmonics
-`example_harmonics()` demonstrates analysis of an distorted signal. The example adds asymmetric clipping distortion in the signal that produces infinite number of odd and even harmonics and demonstrates how these harmonics fall on known delayed peaks in the impulse response.
+`example_harmonics()` demonstrates analysis of an distorted signal. The example adds asymmetric clipping distortion in the signal that creates large order of odd and even harmonics and demonstrates how these harmonics fall on known delayed times in the impulse response.
 
 ![Harmonics](images/harmonics.png "Impulse Response with harmonics")
 
@@ -39,7 +39,7 @@ Copyright 2022 - 2024 Teemu Ikonen
 ![Harmonics](images/thd.png "Total Harmonic Distortion (THD)")
 
 ### sample_analyze
-`sample_analyze(T, fstart, fend, filename)` Read measured sample file and performs THD analysis. Analysis intermediate files and results are stored in out folder.
+`sample_analyze(T, fstart, fend, filename)` Reads measured sample file and performs THD analysis. Analysis intermediate files and results are stored in `out` folder. `data` folder has stimulus sweep that was played through Genelec speaker and recorded on UMIK-1 microphone. 
 
     >> filename = data/closed_loop.wav;
     >> sample_analyze(5, 20, 5500, filename);    
@@ -47,28 +47,30 @@ Copyright 2022 - 2024 Teemu Ikonen
     Wrote out/deconvoluted_impulse_closed_loop.wav    
     Wrote out/data_closed_loop.csv
 
+The frequency response is presentative of a Hi-Fi speaker and the THD is minimal as expected.
+
 ![Sample frequency response](images/sample_freq_response.png "Frequency Response")
 
-Data must start immediately in the samplefile. The sweep range must match match exactly the excitation sweep that was used to record the sample file. Wrong frequency skews the results.
- Here 50 was used starting frequency instead of correct 20.
+**NOTE** Data must start immediately in the samplefile. The sweep range must match exactly the excitation sweep that was used to record the sample file. Wrong frequency skews the results.
+As example in the following 50Hz was used as a starting frequency instead of the correct 20Hz when analyzing the samplefile.
 
 ![Incorrect frequency response](images/sample_freq_response_wrong_freq.png "Incorrect frequency response")
 
 
 ### Bandwidth and Harmonics
 
-Deconvolution with the inverse filter removes all frequencies beyond the end of the sweep frequency `fend`. Higher frequencies in the harmonics disappear. The sweep (and its inverse) must go further to higher frequencies to capture ever more higher frequency harmonics. Also sample rate `fs` must be high enough!
+Deconvolution inverse filter removes all frequencies higher than the end of the sweep frequency. Higher frequencies in the harmonics disappear. The sweep must be done further to capture ever more higher frequency harmonics. Also sample rate must be high enough to capture frequencies of interest.
 
-For example let end of sweep `fend` = 6000Hz and sample rate `fs` >= 12000Hz. The 2nd order harmonics end at 3000Hz, 3rd order at 2000Hz and so on. Increasing sample rate has no effect.
+For example let end of sweep `fend` = 6000Hz and sample rate `fs` >= 12000Hz. The 2nd order harmonics end at fundamental 3000Hz, 3rd order at 2000Hz and so on. Increasing sample rate has no effect. This can be easily experimented with the `example_thd_analyze()` function.
 
-However this is not an major issue with audio where sweep end at 20kHz. Human ear can't really hear harmonics above that frequency. For example 2nd harmonics beyond 10kHz fundamental cannot be heard, 3rd harmonics beyond 6.7kHz and so on.
+However this is not an major issue for audio where sweep ends at 20kHz. Human ear can't really hear harmonics above that frequency. For example 2nd harmonics beyond 10kHz fundamental cannot be heard, 3rd harmonics beyond 6.7kHz and so on.
 
-If you want to analyze 2nd harmonics up to e.g. 6000Hz you must generate the sweep up to 12000Hz (and use 24000Hz sample rate). If you want to analyze 3rd harmonics up to 6000Hz the sweep must be generated up to 3*6000 = 18000Hz and sample rate must be naturally twice that, 36000Hz. And so on. On measurement sweep signal needs to be played only up to fundamental end frequency (6000Hz in this example). Use function tfreqsinelog() to figure out when to stop. Another way would be to low pass filter the sweep signal before playback. The recording has to be full length to match the filter length. e.g. To analyze up to 6000hz a 1 second long sweep generated to 18000, the playback can be stopped at 0.7559s.
+If you want to analyze 2nd harmonics up to e.g. 6000Hz you must generate the sweep up to 12000Hz (and use 24000Hz sample rate). If you want to analyze 3rd harmonics up to 6000Hz the sweep must be generated up to 3*6000 = 18000Hz and sample rate must be naturally twice that, 36000Hz. And so on. On measurement sweep signal needs to be played only up to fundamental end frequency (6000Hz in this example). Use function tfreqsinelog() to figure out when to stop. Another way would be to low pass filter the sweep signal before playback. The recording has to be full length to match the filter length. e.g. To analyze up to 6000hz a 1 second long sweep generated to 18000, the playback can be stopped at 0.7559s. but recording must last for full 1 second.
 
     >> tfreqsinelog(6000, 1, 200, 18000)
     ans = 0.7559    
 
-## Library  functions
+## Main Library  functions
 Examples are based on following functions.
 
 ### sinelog, isinelog
@@ -84,7 +86,7 @@ Examples are based on following functions.
     >>
 
 ### dbfft_smooth
-`[freq, Xdb] = dbfft_smooth(x, fs, N)` Smoothed out frequency power spectrum in dB. Returns frequency points for Renard 40 frequencies up to sampling rate averaged over by N neighbouring octaves.
+`[freq, Xdb] = dbfft_smooth(x, fs, N)` Smoothed out frequency power spectrum in dB. Returns frequency points for Renard 40 frequencies up to sampling rate averaged over by 1/N octaves.
 
     >> [freq, Ydb] = dbfft_smooth(y, fs, 8);
     >> plot(freq, Ydb)
