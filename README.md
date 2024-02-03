@@ -35,6 +35,8 @@ Copyright 2022 - 2024 Teemu Ikonen
     >> fs = 14400    
     >> example_thd_analyze(T, fstart, fend, fs);
 
+Frequency plot y-axis absolute dB values are meaningless and depend on the sweep length. Only relative dB difference between the main and harmonics is important.
+
 ![Frequency response](images/freq_response.png "Frequency Response")
 ![Harmonics](images/thd.png "Total Harmonic Distortion (THD)")
 
