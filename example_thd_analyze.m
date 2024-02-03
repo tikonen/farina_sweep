@@ -104,7 +104,7 @@ function example_thd_analyze(T, f1, f2, fs)
   [freq, Hdb] = dbfft_smooth(h, fs, 12);
   figure;
   plot(freq, Hdb);
-  title('Impulse response (main)');
+  title('Impulse response');
   xlabel("Hz")
   ylabel("dB");
   axis(dbScale);
@@ -125,7 +125,7 @@ function example_thd_analyze(T, f1, f2, fs)
   [freq, Hfdb] = dbfft_smooth(hfundamental, fs, 12);
   figure;
   plot(freq, Hfdb, 'DisplayName', 'Main');
-  title("Freq. response");
+  title("Frequency response");
   xlabel("Hz")
   ylabel("dB");
   axis(dbScale);
@@ -153,7 +153,7 @@ function example_thd_analyze(T, f1, f2, fs)
     hrs(i,:) = 10.^(Xdb/20);
   endfor
 
-  legend('location', 'southoutside');
+  legend('location', 'southoutside', "orientation", "horizontal");
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % THD as percentage
