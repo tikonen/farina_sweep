@@ -2,6 +2,9 @@
 1;
 
 % Renard series
+%
+% Copyright 2022 - 2024 Teemu Ikonen
+%
 
 function r80 = renard_r80()
   r80 = [1.0, 1.03, 1.06, 1.09, 1.12, 1.15, 1.18, 1.22, ...
@@ -28,3 +31,22 @@ function r40 = renard_r40()
          7.5, 8, 8.5, 9, 9.5, 10];
 endfunction
 
+function ret = generate_r40(limit)
+  % Generate renard numbers up to a limit
+  r40 = renard_r40();
+  ret = r40;
+  decade = 10;
+  while ret(end) < limit
+    ret = [ret r40(1:end-1) * decade];
+    decade *= 10;
+  endwhile
+
+  % Limit
+  for i=length(ret):-1:1
+    if ret(i) < limit
+      ret = ret(1:i);
+      break
+    endif
+  endfor
+  ret = unique(round(ret));
+endfunction

@@ -1,3 +1,11 @@
+# Convert Audio Precision csv exports to wav files.
+#
+# Required libraries
+# * soundfile (https://pypi.org/project/soundfile)
+# * numpy (https://pypi.org/project/numpy/)
+#
+# Copyright 2022 - 2024 Teemu Ikonen
+#
 import argparse
 import os
 try:
@@ -11,13 +19,6 @@ try:
 except Exception as e:
     print("ERROR: Please install soundfile (https://pypi.org/project/soundfile)")
     raise e
-
-
-# Convert Audio Precision csv exports to wav files.
-#
-# Required libraries
-# * soundfile (https://pypi.org/project/soundfile)
-# * numpy (https://pypi.org/project/numpy/)
 
 def main():
     parser = argparse.ArgumentParser(description='CSV to WAV')

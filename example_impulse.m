@@ -1,4 +1,7 @@
-% Demonstrates impulse response
+% Demonstrates sweeps impulse response
+%
+% Copyright 2022 - 2024 Teemu Ikonen
+%
 function example_impulse()
 
   T = 1; % duration of the sweep
@@ -40,7 +43,7 @@ function example_impulse()
   figure
   plot(linspace(-T, tdelta, length(h)), h);
   title("Impulse response");
-  xlabel("t(s)")
+  xlabel("t (s)")
   % y axis is unitless
 
 endfunction

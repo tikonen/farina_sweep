@@ -1,4 +1,7 @@
 % Demonstrates nth order harmonics spikes in the impulse response
+%
+% Copyright 2022 - 2024 Teemu Ikonen
+%
 function example_harmonics()
 
   T = 1; % duration of the sweep
@@ -35,7 +38,7 @@ function example_harmonics()
   % Plotting the impulse response
   plot(linspace(-T, tdelta, length(h)), h);
   title("Impulse response");
-  xlabel("t(s)")
+  xlabel("t (s)")
   % y axis is unitless
   ylim([-20 40]);
 
