@@ -8,9 +8,8 @@ function pos = findsignal(haystack, needle)
   % reaches peak.
   [x, lags] = xcorr(haystack, needle);
   x = abs(x);
-  A = sum(x);
-  z = (0:length(x)-1);
-  d = round(1/A * sum(z .* x)); % center of mass for x-coordinate
-  pos = lags(d);
+
+  [_, idx] = max(x);
+  pos = lags(idx);
 endfunction
 
