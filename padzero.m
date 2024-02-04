@@ -1,4 +1,5 @@
-# Pad series with zeroes
+% Pad vector with zeroes up to length l. If l is negative the
+% vector is left padded.
 %
 % Copyright 2022 - 2024 Teemu Ikonen
 %
