@@ -1,6 +1,6 @@
 # Distortion analysis using "Farina Sweep" method.
 
-"Farina Sweep" is a method for measuring impulse response and distortion with a single logarithmic sine sweep.  [[1]](#1).
+"Farina Sweep" is a method for measuring impulse response and distortion with a single logarithmic sine sweep.  ([[1]](#1), [[4]](#1)).
 
 Basic algorithm of Farina method:
 1. Generate logarithmic sweep excitation signal of known length, start and end frequency.
@@ -10,7 +10,7 @@ Basic algorithm of Farina method:
 
 This project demonstrates the core of this analysis method. It may be useful for learning and basis for further development. Written for [GNU Octave 8.3.0](https://octave.org/) but almost any version should work. Matlab should also run the scripts with minor modifications.
 
-Filtering, frequency bin shifting, fading, smoothing, windowing methods etc. are often utilized with farina sweep to get cleaner results. See [[2]](#2) for some details. These methods are not used in the examples, except for the frequency response averaging (smoothing) for cleaner graph plotting.
+Filtering, frequency bin shifting, fading, smoothing, windowing methods etc. are often utilized with farina sweep to get cleaner results. See ([[2]](#2), [[3]](#3)) for some details. These methods are not used in the examples, except for the frequency response averaging (smoothing) for cleaner graph plotting.
 
 Copyright 2022 - 2024 Teemu Ikonen
 
@@ -61,7 +61,7 @@ As an example in the following 50Hz was used as analysis starting frequency inst
 
 ### Bandwidth and Harmonics
 
-Deconvolution inverse filter removes all frequencies higher than the end of the sweep frequency. Higher frequencies in the harmonics disappear. The sweep must be done further to capture ever more higher frequency harmonics. Also sample rate must be high enough to capture frequencies of interest.
+Deconvolution inverse filter removes all frequencies higher than the end of the sweep frequency. Higher frequencies in the harmonics disappear. The sweep must be done further to capture ever more higher frequency harmonics. Also sample rate must be high enough to capture frequencies of interest. (*Figure 6a* [[2]](#2))
 
 For example let end of sweep `fend` = 6000Hz and sample rate `fs` >= 12000Hz. The 2nd order harmonics end for fundamental 3000Hz, 3rd order for 2000Hz fundamental and so on. Increasing sample rate has no effect as deconvolution removes all frequencies beyond 6000Hz. This can be easily experimented with the `example_thd_analyze()` function.
 
@@ -121,9 +121,12 @@ Examples are based on following functions.
 
 <a id="1">[1]</a>  Angelo Farina, "Simultaneous measurement of impulse response and distortion with a swept-sine technique", AES 108th Convention 2000  February  19-22 Paris, France.
 <br>
-<a id="2">[2]</a>  Antonin Novak, Laurent Simon, Pierrick Lotton. Synchronized Swept-Sine: Theory, Application, and Implementation. Journal of the Audio Engineering Society, 2015, 63 (10), pp.786-798.
+<a id="2">[2]</a>  Antonín Novák, Laurent Simon, Pierrick Lotton. "Synchronized Swept-Sine: Theory, Application, and Implementation". Journal of the Audio Engineering Society, 2015, 63 (10), pp.786-798.
 ff10.17743/jaes.2015.0071ff. ffhal-02504321.
-
+<br>
+<a id="3">[3]</a> Katja Vetter, Serafino di Rosario, "ExpoChirpToolbox: a Pure Data implementation of ESS impulse response measurement", Rotterdam/London, July 2011
+<br>
+<a id="4">[4]</a> Ian H. Chan, "Swept Sine Chirps for Measuring Impulse Response", Publication of Stanford Research Systems, Inc.
 
 
 
