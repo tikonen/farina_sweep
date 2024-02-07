@@ -9,7 +9,7 @@ function sample_analyze(T, f1, f2, samplefile)
   printf('Sample rate %dHz. Duration %.2fs\n', fs, length(y)/fs);
   samplefile =  strsplit(samplefile, '/')(end){1,1};
 
-  # Assume sample starts from t=0 and add silence in the sample
+  % Assume sample starts from t=0 and add silence in the sample
   tdelta = T * .1;
   y = padzero(y, (round(fs * tdelta) + length(y)));
 
@@ -104,7 +104,7 @@ function sample_analyze(T, f1, f2, samplefile)
   legend('location', 'southoutside', "orientation", "horizontal");
 
 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % THD as percentage
   figure
   X = 10.^(Hfdb/20);

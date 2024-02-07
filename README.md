@@ -13,6 +13,8 @@ This project demonstrates the core of this analysis method. It may be useful for
 Filtering, frequency bin shifting, fading, smoothing, windowing methods etc. are often utilized with farina sweep to get cleaner results. See ([[2]](#2), [[3]](#3)) for some details. These methods are not used in the examples, except for the frequency response averaging (smoothing) for cleaner graph plotting.
 
 Copyright 2022 - 2024 Teemu Ikonen
+<br>
+MIT License.
 
 # Examples
 
